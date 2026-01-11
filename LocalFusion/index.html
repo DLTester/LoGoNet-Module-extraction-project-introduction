@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>局部融合（Local Fusion） - LoGoNet 跨模态融合算子文档</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/overrides.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u5c40\u90e8\u878d\u5408\uff08Local Fusion\uff09";
+        var mkdocs_page_input_path = "LocalFusion.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> LoGoNet 跨模态融合算子文档
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">文档首页</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../GlobalFusion/">全局融合（Global Fusion）</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">局部融合（Local Fusion）</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#api">API 文档</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#generate_roi_grids">generate_roi_grids</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.operator.generate_roi_grids">generate_roi_grids</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.operator.generate_roi_grids.generate_roi_grids">generate_roi_grids</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positionencodinglayer">PositionEncodingLayer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer">PositionEncodingLayer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer">PositionEncodingLayer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_1">结构说明（按顺序）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_2">输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_3">输出</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_4">模块用途</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer.forward">forward</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#project_grid_centers_to_image">project_grid_centers_to_image</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.operator.project_grid_centers_to_image">project_grid_centers_to_image</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.operator.project_grid_centers_to_image.project_grid_centers_to_image">project_grid_centers_to_image</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#localfusionlayer">LocalFusionLayer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer">LocalFusionLayer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer">LocalFusionLayer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_1">结构说明（按顺序）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_2">输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_3">输出</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_4">模块用途</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer.forward">forward</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FeatureAggregation/">特征聚合（Feature Aggregation）</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../framework/">框架总览（Framework）</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">LoGoNet 跨模态融合算子文档</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">局部融合（Local Fusion）</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="local-fusion">Local Fusion（局部融合）<a class="headerlink" href="#local-fusion" title="Permanent link">&para;</a></h1>
+<p>本阶段的作用是 <strong>在候选框（RoI）内部进行细粒度跨模态融合</strong>，
+通过将目标内部的局部点云结构与对应的图像局部语义进行对齐，
+增强模型对目标内部空间结构与语义细节的建模能力。</p>
+<p>与全局融合不同，局部融合关注的是 <strong>单个目标内部的局部区域</strong>，
+属于 LoGoNet 融合流程中的 <strong>第二层跨模态融合</strong>。</p>
+<p>本阶段包含四个算子：</p>
+<ol>
+<li>
+<p><strong>generate_roi_grids</strong><br />
+   在每个 3D 候选框内部按照规则划分生成多个局部网格，用于刻画目标内部的空间结构。</p>
+</li>
+<li>
+<p><strong>PositionEncodingLayer</strong><br />
+   对 RoI 内部各网格的几何位置与统计信息进行编码，生成可学习的几何位置特征。</p>
+</li>
+<li>
+<p><strong>project_grid_centers_to_image</strong><br />
+   将 RoI 内部网格中心点从三维空间投影到二维图像平面，建立局部网格与图像区域之间的对应关系。</p>
+</li>
+<li>
+<p><strong>LocalFusionLayer</strong><br />
+   在网格级别对点云特征与图像特征进行跨模态融合，生成包含局部语义与几何信息的融合特征表示。</p>
+</li>
+</ol>
+<hr />
+<h2 id="api">API 文档<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<h3 id="generate_roi_grids">generate_roi_grids<a class="headerlink" href="#generate_roi_grids" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="LocalFusion.operator.generate_roi_grids"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="LocalFusion.operator.generate_roi_grids.generate_roi_grids" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">generate_roi_grids</span><span class="p">(</span><span class="n">rois</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span></code>
+
+<a href="#LocalFusion.operator.generate_roi_grids.generate_roi_grids" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>在每个 3D 候选框（RoI）内部生成规则的局部网格，用于后续局部特征建模。</p>
+<p>该算子将每个 3D 框在自身坐标系下均匀划分为若干个小立方体网格，
+并输出每个网格中心点的三维坐标。该过程仅依赖几何规则，
+不包含任何可学习参数。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>rois</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, 7)
+3D 候选框参数，格式为 (x, y, z, dx, dy, dz, yaw)，
+K 表示候选框数量。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>grid_size</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>int
+每个维度上的网格划分数量，
+总网格数为 grid_size³。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>grid_centers</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(K, G, 3)
+每个候选框内部的网格中心点坐标，
+其中 G = grid_size³，
+第 i 个候选框对应 G 个局部网格中心。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>LocalFusion\operator\generate_roi_grids.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::generate_roi_grids&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_roi_grids</span><span class="p">(</span>
+        <span class="n">rois</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    在每个 3D 候选框（RoI）内部生成规则的局部网格，用于后续局部特征建模。</span>
+
+<span class="sd">    该算子将每个 3D 框在自身坐标系下均匀划分为若干个小立方体网格，</span>
+<span class="sd">    并输出每个网格中心点的三维坐标。该过程仅依赖几何规则，</span>
+<span class="sd">    不包含任何可学习参数。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rois: (K, 7)</span>
+<span class="sd">            3D 候选框参数，格式为 (x, y, z, dx, dy, dz, yaw)，</span>
+<span class="sd">            K 表示候选框数量。</span>
+
+<span class="sd">        grid_size: int</span>
+<span class="sd">            每个维度上的网格划分数量，</span>
+<span class="sd">            总网格数为 grid_size³。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        grid_centers: (K, G, 3)</span>
+<span class="sd">            每个候选框内部的网格中心点坐标，</span>
+<span class="sd">            其中 G = grid_size³，</span>
+<span class="sd">            第 i 个候选框对应 G 个局部网格中心。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">rois</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">grid_size</span> <span class="o">**</span> <span class="mi">3</span>
+
+    <span class="n">device</span> <span class="o">=</span> <span class="n">rois</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">rois</span><span class="o">.</span><span class="n">dtype</span>
+
+    <span class="c1"># 生成归一化网格坐标 [0, 1]</span>
+    <span class="n">lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lin</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># (G, 3)</span>
+
+    <span class="n">grid_centers</span> <span class="o">=</span> <span class="n">rois</span><span class="o">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rois</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># 将归一化网格映射到当前 RoI 的实际空间范围</span>
+        <span class="n">centers</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">centers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">dx</span>
+        <span class="n">centers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">centers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">dy</span>
+        <span class="n">centers</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cz</span> <span class="o">-</span> <span class="n">dz</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">centers</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">dz</span>
+
+        <span class="n">grid_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">centers</span>
+
+    <span class="k">return</span> <span class="n">grid_centers</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="positionencodinglayer">PositionEncodingLayer<a class="headerlink" href="#positionencodinglayer" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="LocalFusion.network.PositionEncodingLayer"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer" class="doc doc-heading">
+            <code>PositionEncodingLayer</code>
+
+
+<a href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+
+        <p>PositionEncodingLayer 模块（LoGoNet 局部融合阶段的几何位置编码算子）。</p>
+<p>该模块用于对候选框（RoI）内部的局部网格进行几何信息编码，
+将每个网格的<strong>相对空间位置</strong>以及<strong>点云分布密度信息</strong>映射到
+可学习的特征空间中，从而为后续局部跨模态融合提供结构先验。</p>
+<p>本模块属于 <strong>可学习算子</strong>，其参数通过训练自动学习，
+但其输入仅依赖几何与统计信息，不涉及图像或语义特征。</p>
+<hr />
+<h5 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_1">结构说明（按顺序）<a class="headerlink" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_1" title="Permanent link">&para;</a></h5>
+<ol>
+<li><strong>输入拼接</strong></li>
+<li>网格中心相对位置 (dx, dy, dz)</li>
+<li>网格内点数量的对数值 log(N + 1)</li>
+<li><strong>Linear → ReLU</strong></li>
+<li>初步映射几何与密度信息</li>
+<li><strong>Linear → ReLU</strong></li>
+<li>提升几何特征表达能力</li>
+<li><strong>Linear</strong></li>
+<li>输出位置编码特征</li>
+</ol>
+<hr />
+<h5 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_2">输入<a class="headerlink" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_2" title="Permanent link">&para;</a></h5>
+<p>Args:
+    grid_centers (torch.Tensor):
+        RoI 内部网格中心点坐标，shape 为 <strong>(K, G, 3)</strong>，
+        K 为候选框数量，G 为每个候选框内的网格数。</p>
+<div class="highlight"><pre><span></span><code>roi_centers (torch.Tensor):
+    候选框中心坐标，shape 为 **(K, 3)**。
+
+grid_point_counts (torch.Tensor):
+    每个网格内的点数量，shape 为 **(K, G)**。
+</code></pre></div>
+<hr />
+<h5 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_3">输出<a class="headerlink" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_3" title="Permanent link">&para;</a></h5>
+<p>Returns:
+    torch.Tensor:
+        网格级几何位置编码特征，shape 为 <strong>(K, G, C)</strong>，
+        C 为位置编码特征维度。</p>
+<hr />
+<h5 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_4">模块用途<a class="headerlink" href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer--_4" title="Permanent link">&para;</a></h5>
+<ul>
+<li>为 RoI 内部局部网格提供结构与密度先验</li>
+<li>引导后续局部跨模态融合关注目标内部有效区域</li>
+<li>属于 LoGoNet 的 LocalFusion（LoF）阶段关键算子</li>
+</ul>
+
+              <details class="quote">
+                <summary>Source code in <code>LocalFusion\network\PositionEncodingLayer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PositionEncodingLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PositionEncodingLayer 模块（LoGoNet 局部融合阶段的几何位置编码算子）。</span>
+
+<span class="sd">    该模块用于对候选框（RoI）内部的局部网格进行几何信息编码，</span>
+<span class="sd">    将每个网格的**相对空间位置**以及**点云分布密度信息**映射到</span>
+<span class="sd">    可学习的特征空间中，从而为后续局部跨模态融合提供结构先验。</span>
+
+<span class="sd">    本模块属于 **可学习算子**，其参数通过训练自动学习，</span>
+<span class="sd">    但其输入仅依赖几何与统计信息，不涉及图像或语义特征。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 结构说明（按顺序）</span>
+<span class="sd">    1. **输入拼接**</span>
+<span class="sd">       - 网格中心相对位置 (dx, dy, dz)</span>
+<span class="sd">       - 网格内点数量的对数值 log(N + 1)</span>
+<span class="sd">    2. **Linear → ReLU**</span>
+<span class="sd">       - 初步映射几何与密度信息</span>
+<span class="sd">    3. **Linear → ReLU**</span>
+<span class="sd">       - 提升几何特征表达能力</span>
+<span class="sd">    4. **Linear**</span>
+<span class="sd">       - 输出位置编码特征</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输入</span>
+<span class="sd">    Args:</span>
+<span class="sd">        grid_centers (torch.Tensor):</span>
+<span class="sd">            RoI 内部网格中心点坐标，shape 为 **(K, G, 3)**，</span>
+<span class="sd">            K 为候选框数量，G 为每个候选框内的网格数。</span>
+
+<span class="sd">        roi_centers (torch.Tensor):</span>
+<span class="sd">            候选框中心坐标，shape 为 **(K, 3)**。</span>
+
+<span class="sd">        grid_point_counts (torch.Tensor):</span>
+<span class="sd">            每个网格内的点数量，shape 为 **(K, G)**。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输出</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor:</span>
+<span class="sd">            网格级几何位置编码特征，shape 为 **(K, G, C)**，</span>
+<span class="sd">            C 为位置编码特征维度。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 模块用途</span>
+<span class="sd">    - 为 RoI 内部局部网格提供结构与密度先验</span>
+<span class="sd">    - 引导后续局部跨模态融合关注目标内部有效区域</span>
+<span class="sd">    - 属于 LoGoNet 的 LocalFusion（LoF）阶段关键算子</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">grid_centers</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">roi_centers</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">grid_point_counts</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        前向传播过程。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 计算网格中心相对于 RoI 中心的偏移</span>
+        <span class="n">rel_pos</span> <span class="o">=</span> <span class="n">grid_centers</span> <span class="o">-</span> <span class="n">roi_centers</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 3)</span>
+
+        <span class="c1"># 对网格内点数量取对数，增强数值稳定性</span>
+        <span class="n">density</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid_point_counts</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 1)</span>
+
+        <span class="c1"># 拼接几何与密度信息</span>
+        <span class="n">pos_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">rel_pos</span><span class="p">,</span> <span class="n">density</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 4)</span>
+
+        <span class="c1"># 几何位置编码</span>
+        <span class="n">encoded_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">pos_feat</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">encoded_feat</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer.forward" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">grid_centers</span><span class="p">,</span> <span class="n">roi_centers</span><span class="p">,</span> <span class="n">grid_point_counts</span><span class="p">)</span></code>
+
+<a href="#LocalFusion.network.PositionEncodingLayer.PositionEncodingLayer.forward" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>前向传播过程。</p>
+
+            <details class="quote">
+              <summary>Source code in <code>LocalFusion\network\PositionEncodingLayer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">grid_centers</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">roi_centers</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">grid_point_counts</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    前向传播过程。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 计算网格中心相对于 RoI 中心的偏移</span>
+    <span class="n">rel_pos</span> <span class="o">=</span> <span class="n">grid_centers</span> <span class="o">-</span> <span class="n">roi_centers</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 3)</span>
+
+    <span class="c1"># 对网格内点数量取对数，增强数值稳定性</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid_point_counts</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 1)</span>
+
+    <span class="c1"># 拼接几何与密度信息</span>
+    <span class="n">pos_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">rel_pos</span><span class="p">,</span> <span class="n">density</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 4)</span>
+
+    <span class="c1"># 几何位置编码</span>
+    <span class="n">encoded_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">pos_feat</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">encoded_feat</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="project_grid_centers_to_image">project_grid_centers_to_image<a class="headerlink" href="#project_grid_centers_to_image" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="LocalFusion.operator.project_grid_centers_to_image"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="LocalFusion.operator.project_grid_centers_to_image.project_grid_centers_to_image" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">project_grid_centers_to_image</span><span class="p">(</span><span class="n">grid_centers</span><span class="p">,</span> <span class="n">intrinsic</span><span class="p">,</span> <span class="n">extrinsic</span><span class="p">)</span></code>
+
+<a href="#LocalFusion.operator.project_grid_centers_to_image.project_grid_centers_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>将 RoI 内部网格中心点从三维空间投影到图像平面，得到对应的二维像素坐标。</p>
+<p>该算子用于局部融合阶段（LoF），为每个候选框内部的局部网格
+提供与图像特征对齐的参考位置。本算子仅执行几何投影计算，
+不包含任何可学习参数。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>grid_centers</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, G, 3)
+RoI 内部网格中心点的三维坐标，
+K 为候选框数量，
+G 为每个候选框内的网格数量。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>intrinsic</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(3, 3)
+相机内参矩阵。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>extrinsic</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(4, 4)
+相机外参矩阵，从 LiDAR 坐标系到相机坐标系的变换。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>grid_points_2d</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(K, G, 2)
+网格中心点在图像平面上的二维像素坐标 (u, v)。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>LocalFusion\operator\project_grid_centers_to_image.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::project_grid_centers_to_image&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">project_grid_centers_to_image</span><span class="p">(</span>
+        <span class="n">grid_centers</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">intrinsic</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">extrinsic</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将 RoI 内部网格中心点从三维空间投影到图像平面，得到对应的二维像素坐标。</span>
+
+<span class="sd">    该算子用于局部融合阶段（LoF），为每个候选框内部的局部网格</span>
+<span class="sd">    提供与图像特征对齐的参考位置。本算子仅执行几何投影计算，</span>
+<span class="sd">    不包含任何可学习参数。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        grid_centers: (K, G, 3)</span>
+<span class="sd">            RoI 内部网格中心点的三维坐标，</span>
+<span class="sd">            K 为候选框数量，</span>
+<span class="sd">            G 为每个候选框内的网格数量。</span>
+
+<span class="sd">        intrinsic: (3, 3)</span>
+<span class="sd">            相机内参矩阵。</span>
+
+<span class="sd">        extrinsic: (4, 4)</span>
+<span class="sd">            相机外参矩阵，从 LiDAR 坐标系到相机坐标系的变换。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        grid_points_2d: (K, G, 2)</span>
+<span class="sd">            网格中心点在图像平面上的二维像素坐标 (u, v)。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_centers</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># 展平为二维点集</span>
+    <span class="n">points_3d</span> <span class="o">=</span> <span class="n">grid_centers</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># (K*G, 3)</span>
+
+    <span class="c1"># 齐次坐标</span>
+    <span class="n">ones</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">points_3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">points_3d</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">points_3d</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="p">)</span>
+    <span class="n">points_homo</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">points_3d</span><span class="p">,</span> <span class="n">ones</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K*G, 4)</span>
+
+    <span class="c1"># 变换到相机坐标系</span>
+    <span class="n">points_cam</span> <span class="o">=</span> <span class="p">(</span><span class="n">extrinsic</span> <span class="o">@</span> <span class="n">points_homo</span><span class="o">.</span><span class="n">t</span><span class="p">())</span><span class="o">.</span><span class="n">t</span><span class="p">()[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># (K*G, 3)</span>
+
+    <span class="c1"># 防止深度为 0 或负值</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="n">points_cam</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+
+    <span class="c1"># 相机内参投影</span>
+    <span class="n">uv</span> <span class="o">=</span> <span class="p">(</span><span class="n">intrinsic</span> <span class="o">@</span> <span class="n">points_cam</span><span class="o">.</span><span class="n">t</span><span class="p">())</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>  <span class="c1"># (K*G, 3)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">uv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">uv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span>
+
+    <span class="n">grid_points_2d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grid_points_2d</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="localfusionlayer">LocalFusionLayer<a class="headerlink" href="#localfusionlayer" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="LocalFusion.network.LocalFusionLayer"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer" class="doc doc-heading">
+            <code>LocalFusionLayer</code>
+
+
+<a href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+
+        <p>LocalFusionLayer 模块（LoGoNet 局部融合阶段核心算子）。</p>
+<p>该模块在候选框（RoI）内部的局部网格尺度上，将点云局部特征与图像特征进行对齐与融合，
+用于补充目标内部的细粒度语义信息。其基本过程是：对每个 RoI 的每个网格中心点进行图像投影，
+从图像特征图中采样对应位置的局部语义特征，并与网格的几何位置编码特征共同融合，输出网格级融合特征。</p>
+<p>本模块属于 <strong>可学习算子</strong>，内部包含特征映射与融合参数，训练过程中可通过监督信号更新。</p>
+<hr />
+<h5 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_1">结构说明（按顺序）<a class="headerlink" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_1" title="Permanent link">&para;</a></h5>
+<ol>
+<li><strong>Linear：位置编码特征 → Query</strong></li>
+<li>将网格几何编码映射到融合空间，用于引导局部融合。</li>
+<li><strong>图像特征采样（grid_sample）</strong></li>
+<li>根据网格投影位置从图像特征图提取局部语义特征。</li>
+<li><strong>Linear：图像特征 → Value</strong></li>
+<li>将采样到的图像特征映射到融合空间。</li>
+<li><strong>融合 MLP</strong></li>
+<li>将 Query 与 Value 拼接后进行非线性融合，输出网格级融合特征。</li>
+</ol>
+<hr />
+<h5 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_2">输入<a class="headerlink" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_2" title="Permanent link">&para;</a></h5>
+<p>Args:
+    pos_feat (torch.Tensor):
+        网格几何位置编码特征，shape 为 <strong>(K, G, C_p)</strong>，
+        K 为候选框数量，G 为每个候选框内的网格数量。</p>
+<div class="highlight"><pre><span></span><code>image_feat (torch.Tensor):
+    图像特征张量，shape 为 **(B, C_i, H, W)**，
+    B 为 batch size，C_i 为图像特征通道数。
+
+grid_points_2d (torch.Tensor):
+    网格中心点投影到图像平面的二维像素坐标，shape 为 **(K, G, 2)**，
+    坐标格式为 (u, v)，以像素为单位。
+
+batch_indices (torch.Tensor):
+    每个 RoI 所属的 batch 索引，shape 为 **(K, )**。
+</code></pre></div>
+<hr />
+<h5 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_3">输出<a class="headerlink" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_3" title="Permanent link">&para;</a></h5>
+<p>Returns:
+    torch.Tensor:
+        网格级局部融合特征，shape 为 <strong>(K, G, C_out)</strong>。</p>
+<hr />
+<h5 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_4">模块用途<a class="headerlink" href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer--_4" title="Permanent link">&para;</a></h5>
+<ul>
+<li>在 RoI 内部对局部区域进行跨模态融合，增强目标内部结构表达</li>
+<li>为后续特征聚合与最终框回归、打分提供更细粒度的融合表示</li>
+<li>属于 LoGoNet 的 LocalFusion（LoF）阶段核心部分</li>
+</ul>
+
+              <details class="quote">
+                <summary>Source code in <code>LocalFusion\network\LocalFusionLayer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LocalFusionLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    LocalFusionLayer 模块（LoGoNet 局部融合阶段核心算子）。</span>
+
+<span class="sd">    该模块在候选框（RoI）内部的局部网格尺度上，将点云局部特征与图像特征进行对齐与融合，</span>
+<span class="sd">    用于补充目标内部的细粒度语义信息。其基本过程是：对每个 RoI 的每个网格中心点进行图像投影，</span>
+<span class="sd">    从图像特征图中采样对应位置的局部语义特征，并与网格的几何位置编码特征共同融合，输出网格级融合特征。</span>
+
+<span class="sd">    本模块属于 **可学习算子**，内部包含特征映射与融合参数，训练过程中可通过监督信号更新。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 结构说明（按顺序）</span>
+<span class="sd">    1. **Linear：位置编码特征 → Query**</span>
+<span class="sd">       - 将网格几何编码映射到融合空间，用于引导局部融合。</span>
+<span class="sd">    2. **图像特征采样（grid_sample）**</span>
+<span class="sd">       - 根据网格投影位置从图像特征图提取局部语义特征。</span>
+<span class="sd">    3. **Linear：图像特征 → Value**</span>
+<span class="sd">       - 将采样到的图像特征映射到融合空间。</span>
+<span class="sd">    4. **融合 MLP**</span>
+<span class="sd">       - 将 Query 与 Value 拼接后进行非线性融合，输出网格级融合特征。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输入</span>
+<span class="sd">    Args:</span>
+<span class="sd">        pos_feat (torch.Tensor):</span>
+<span class="sd">            网格几何位置编码特征，shape 为 **(K, G, C_p)**，</span>
+<span class="sd">            K 为候选框数量，G 为每个候选框内的网格数量。</span>
+
+<span class="sd">        image_feat (torch.Tensor):</span>
+<span class="sd">            图像特征张量，shape 为 **(B, C_i, H, W)**，</span>
+<span class="sd">            B 为 batch size，C_i 为图像特征通道数。</span>
+
+<span class="sd">        grid_points_2d (torch.Tensor):</span>
+<span class="sd">            网格中心点投影到图像平面的二维像素坐标，shape 为 **(K, G, 2)**，</span>
+<span class="sd">            坐标格式为 (u, v)，以像素为单位。</span>
+
+<span class="sd">        batch_indices (torch.Tensor):</span>
+<span class="sd">            每个 RoI 所属的 batch 索引，shape 为 **(K, )**。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输出</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor:</span>
+<span class="sd">            网格级局部融合特征，shape 为 **(K, G, C_out)**。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 模块用途</span>
+<span class="sd">    - 在 RoI 内部对局部区域进行跨模态融合，增强目标内部结构表达</span>
+<span class="sd">    - 为后续特征聚合与最终框回归、打分提供更细粒度的融合表示</span>
+<span class="sd">    - 属于 LoGoNet 的 LocalFusion（LoF）阶段核心部分</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">image_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">pos_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">image_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuse_mlp</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">out_channels</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pos_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">image_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">grid_points_2d</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">batch_indices</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        前向传播过程。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">K</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pos_feat</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">C_i</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># 1) 位置编码 → Query</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span><span class="p">(</span><span class="n">pos_feat</span><span class="p">)</span>  <span class="c1"># (K, G, C_out)</span>
+
+        <span class="c1"># 2) 像素坐标归一化到 [-1, 1]，以支持 grid_sample</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">grid_points_2d</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># (K, G)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">grid_points_2d</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># (K, G)</span>
+        <span class="n">norm_u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">/</span> <span class="p">(</span><span class="n">W</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">norm_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="p">(</span><span class="n">H</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">norm_u</span><span class="p">,</span> <span class="n">norm_v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 2)</span>
+
+        <span class="c1"># 3) 按每个 RoI 的 batch 索引，从对应图像特征里采样</span>
+        <span class="n">sampled_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">grid_i</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># (1, G, 1, 2)</span>
+            <span class="n">feat_i</span> <span class="o">=</span> <span class="n">image_feat</span><span class="p">[</span><span class="n">b</span><span class="p">:</span><span class="n">b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>       <span class="c1"># (1, C_i, H, W)</span>
+            <span class="n">samp_i</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">grid_sample</span><span class="p">(</span><span class="n">feat_i</span><span class="p">,</span> <span class="n">grid_i</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># (1, C_i, G, 1)</span>
+            <span class="n">samp_i</span> <span class="o">=</span> <span class="n">samp_i</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>      <span class="c1"># (G, C_i)</span>
+            <span class="n">sampled_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samp_i</span><span class="p">)</span>
+
+        <span class="n">sampled_img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sampled_list</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (K, G, C_i)</span>
+
+        <span class="c1"># 4) 图像特征 → Value</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span><span class="p">(</span><span class="n">sampled_img</span><span class="p">)</span>  <span class="c1"># (K, G, C_out)</span>
+
+        <span class="c1"># 5) 拼接后融合</span>
+        <span class="n">fused</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuse_mlp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># (K, G, C_out)</span>
+
+        <span class="k">return</span> <span class="n">fused</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="LocalFusion.network.LocalFusionLayer.LocalFusionLayer.forward" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">pos_feat</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">grid_points_2d</span><span class="p">,</span> <span class="n">batch_indices</span><span class="p">)</span></code>
+
+<a href="#LocalFusion.network.LocalFusionLayer.LocalFusionLayer.forward" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>前向传播过程。</p>
+
+            <details class="quote">
+              <summary>Source code in <code>LocalFusion\network\LocalFusionLayer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">pos_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">image_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">grid_points_2d</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">batch_indices</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    前向传播过程。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pos_feat</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">C_i</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># 1) 位置编码 → Query</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span><span class="p">(</span><span class="n">pos_feat</span><span class="p">)</span>  <span class="c1"># (K, G, C_out)</span>
+
+    <span class="c1"># 2) 像素坐标归一化到 [-1, 1]，以支持 grid_sample</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">grid_points_2d</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># (K, G)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">grid_points_2d</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># (K, G)</span>
+    <span class="n">norm_u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">/</span> <span class="p">(</span><span class="n">W</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">norm_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="p">(</span><span class="n">H</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">norm_u</span><span class="p">,</span> <span class="n">norm_v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, G, 2)</span>
+
+    <span class="c1"># 3) 按每个 RoI 的 batch 索引，从对应图像特征里采样</span>
+    <span class="n">sampled_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">grid_i</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># (1, G, 1, 2)</span>
+        <span class="n">feat_i</span> <span class="o">=</span> <span class="n">image_feat</span><span class="p">[</span><span class="n">b</span><span class="p">:</span><span class="n">b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>       <span class="c1"># (1, C_i, H, W)</span>
+        <span class="n">samp_i</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">grid_sample</span><span class="p">(</span><span class="n">feat_i</span><span class="p">,</span> <span class="n">grid_i</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># (1, C_i, G, 1)</span>
+        <span class="n">samp_i</span> <span class="o">=</span> <span class="n">samp_i</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>      <span class="c1"># (G, C_i)</span>
+        <span class="n">sampled_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samp_i</span><span class="p">)</span>
+
+    <span class="n">sampled_img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sampled_list</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (K, G, C_i)</span>
+
+    <span class="c1"># 4) 图像特征 → Value</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span><span class="p">(</span><span class="n">sampled_img</span><span class="p">)</span>  <span class="c1"># (K, G, C_out)</span>
+
+    <span class="c1"># 5) 拼接后融合</span>
+    <span class="n">fused</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuse_mlp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># (K, G, C_out)</span>
+
+    <span class="k">return</span> <span class="n">fused</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../GlobalFusion/" class="btn btn-neutral float-left" title="全局融合（Global Fusion）"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../FeatureAggregation/" class="btn btn-neutral float-right" title="特征聚合（Feature Aggregation）">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../GlobalFusion/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../FeatureAggregation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

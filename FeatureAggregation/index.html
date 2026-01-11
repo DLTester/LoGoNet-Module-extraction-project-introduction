@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>特征聚合（Feature Aggregation） - LoGoNet 跨模态融合算子文档</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/overrides.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u7279\u5f81\u805a\u5408\uff08Feature Aggregation\uff09";
+        var mkdocs_page_input_path = "FeatureAggregation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> LoGoNet 跨模态融合算子文档
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">文档首页</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../GlobalFusion/">全局融合（Global Fusion）</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../LocalFusion/">局部融合（Local Fusion）</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">特征聚合（Feature Aggregation）</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#api">API 文档</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#merge_fusion_features">merge_fusion_features</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.operator.merge_fusion_features">merge_fusion_features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.operator.merge_fusion_features.merge_fusion_features">merge_fusion_features</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#featureaggregationlayer">FeatureAggregationLayer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer">FeatureAggregationLayer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer">FeatureAggregationLayer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_1">结构说明（按顺序）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_2">输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_3">输出</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_4">模块用途</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer.forward">forward</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#roirefinehead">RoIRefineHead</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead">RoIRefineHead</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead">RoIRefineHead</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_1">结构说明（按顺序）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_2">输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_3">输出</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_4">模块用途</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead.forward">forward</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../framework/">框架总览（Framework）</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">LoGoNet 跨模态融合算子文档</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">特征聚合（Feature Aggregation）</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="feature-aggregation">Feature Aggregation（特征聚合）<a class="headerlink" href="#feature-aggregation" title="Permanent link">&para;</a></h1>
+<p>本阶段的作用是 <strong>对来自不同融合路径的多源特征进行统一整合与关系建模</strong>，
+通过在候选框（RoI）内部对局部网格特征进行动态聚合，
+增强模型对目标整体结构与语义一致性的建模能力。</p>
+<p>特征聚合阶段承接全局融合与局部融合的输出，
+属于 LoGoNet 融合流程中的 <strong>最终特征建模阶段</strong>，
+其输出将直接用于后续的候选框分类与位置回归。</p>
+<p>本阶段包含三个算子：</p>
+<ol>
+<li>
+<p><strong>merge_fusion_features</strong><br />
+   对全局融合特征、局部融合特征以及几何位置编码特征进行合并，
+   生成统一的网格级融合特征表示。</p>
+</li>
+<li>
+<p><strong>FeatureAggregationLayer</strong><br />
+   在候选框内部对网格级融合特征进行关系建模，
+   通过自注意力机制实现不同局部网格之间的信息交互与动态聚合。</p>
+</li>
+<li>
+<p><strong>RoIRefineHead</strong><br />
+   对聚合后的候选框级特征进行分类与三维框参数回归，
+   输出最终的检测置信度与精细化的位置预测结果。</p>
+</li>
+</ol>
+<hr />
+<h2 id="api">API 文档<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<h3 id="merge_fusion_features">merge_fusion_features<a class="headerlink" href="#merge_fusion_features" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="FeatureAggregation.operator.merge_fusion_features"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="FeatureAggregation.operator.merge_fusion_features.merge_fusion_features" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">merge_fusion_features</span><span class="p">(</span><span class="n">global_feat</span><span class="p">,</span> <span class="n">local_feat</span><span class="p">,</span> <span class="n">pos_feat</span><span class="p">)</span></code>
+
+<a href="#FeatureAggregation.operator.merge_fusion_features.merge_fusion_features" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>融合多源特征（全局融合特征、局部融合特征与几何位置编码特征）。</p>
+<p>该算子用于在特征聚合阶段（FDA）之前，对来自不同融合路径的特征进行
+统一合并。融合方式采用逐元素相加，不引入额外的可学习参数，
+仅完成特征对齐与信息汇总。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>global_feat</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, G, C)
+全局融合得到的特征张量，
+K 为候选框数量，
+G 为网格数量，
+C 为特征维度。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>local_feat</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, G, C)
+局部融合得到的特征张量。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pos_feat</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, G, C)
+几何位置编码特征张量。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>fused_feat</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(K, G, C)
+合并后的融合特征张量，作为后续特征关系建模的输入。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>FeatureAggregation\operator\merge_fusion_features.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::merge_fusion_features&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_fusion_features</span><span class="p">(</span>
+        <span class="n">global_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">local_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">pos_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    融合多源特征（全局融合特征、局部融合特征与几何位置编码特征）。</span>
+
+<span class="sd">    该算子用于在特征聚合阶段（FDA）之前，对来自不同融合路径的特征进行</span>
+<span class="sd">    统一合并。融合方式采用逐元素相加，不引入额外的可学习参数，</span>
+<span class="sd">    仅完成特征对齐与信息汇总。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        global_feat: (K, G, C)</span>
+<span class="sd">            全局融合得到的特征张量，</span>
+<span class="sd">            K 为候选框数量，</span>
+<span class="sd">            G 为网格数量，</span>
+<span class="sd">            C 为特征维度。</span>
+
+<span class="sd">        local_feat: (K, G, C)</span>
+<span class="sd">            局部融合得到的特征张量。</span>
+
+<span class="sd">        pos_feat: (K, G, C)</span>
+<span class="sd">            几何位置编码特征张量。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        fused_feat: (K, G, C)</span>
+<span class="sd">            合并后的融合特征张量，作为后续特征关系建模的输入。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fused_feat</span> <span class="o">=</span> <span class="n">global_feat</span> <span class="o">+</span> <span class="n">local_feat</span> <span class="o">+</span> <span class="n">pos_feat</span>
+    <span class="k">return</span> <span class="n">fused_feat</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="featureaggregationlayer">FeatureAggregationLayer<a class="headerlink" href="#featureaggregationlayer" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="FeatureAggregation.network.FeatureAggregationLayer"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer" class="doc doc-heading">
+            <code>FeatureAggregationLayer</code>
+
+
+<a href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+
+        <p>FeatureAggregationLayer 模块（LoGoNet 特征动态聚合阶段核心算子）。</p>
+<p>该模块用于在候选框（RoI）内部对网格级融合特征进行关系建模与动态聚合，
+使不同局部网格之间能够进行信息交互，从而统一整合全局融合、局部融合与几何先验
+所形成的多源特征表示。其本质是对网格序列特征进行自注意力建模，并通过前馈网络
+进一步增强表达能力。</p>
+<p>本模块属于 <strong>可学习算子</strong>，其参数在训练过程中根据监督信号更新。</p>
+<hr />
+<h5 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_1">结构说明（按顺序）<a class="headerlink" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_1" title="Permanent link">&para;</a></h5>
+<ol>
+<li><strong>MultiheadAttention（自注意力）</strong></li>
+<li>在同一候选框内部，让各网格特征互相关注，实现局部关系建模。</li>
+<li><strong>残差连接 + LayerNorm</strong></li>
+<li>稳定训练并保留原始特征信息。</li>
+<li><strong>前馈网络（FFN）</strong></li>
+<li>对每个网格特征做非线性变换，增强语义表达能力。</li>
+<li><strong>残差连接 + LayerNorm</strong></li>
+<li>输出聚合后的网格级融合特征。</li>
+</ol>
+<hr />
+<h5 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_2">输入<a class="headerlink" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_2" title="Permanent link">&para;</a></h5>
+<p>Args:
+    fused_feat (torch.Tensor):
+        网格级融合特征，shape 为 <strong>(K, G, C)</strong>，
+        K 为候选框数量，G 为每个候选框的网格数量，C 为特征维度。</p>
+<div class="highlight"><pre><span></span><code>attn_mask (torch.Tensor, optional):
+    注意力掩码，shape 为 **(G, G)** 或可广播到该形状，用于屏蔽无效网格之间的注意力。
+</code></pre></div>
+<hr />
+<h5 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_3">输出<a class="headerlink" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_3" title="Permanent link">&para;</a></h5>
+<p>Returns:
+    torch.Tensor:
+        聚合后的网格级特征，shape 为 <strong>(K, G, C)</strong>。</p>
+<hr />
+<h5 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_4">模块用途<a class="headerlink" href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer--_4" title="Permanent link">&para;</a></h5>
+<ul>
+<li>在 RoI 内部建立网格之间的关系，提升对目标内部结构的表达能力</li>
+<li>统一整合多源融合信息，为最终框回归与置信度预测提供高质量特征</li>
+<li>属于 LoGoNet 的 Feature Dynamic Aggregation（FDA）阶段核心算子</li>
+</ul>
+
+              <details class="quote">
+                <summary>Source code in <code>FeatureAggregation\network\FeatureAggregationLayer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FeatureAggregationLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FeatureAggregationLayer 模块（LoGoNet 特征动态聚合阶段核心算子）。</span>
+
+<span class="sd">    该模块用于在候选框（RoI）内部对网格级融合特征进行关系建模与动态聚合，</span>
+<span class="sd">    使不同局部网格之间能够进行信息交互，从而统一整合全局融合、局部融合与几何先验</span>
+<span class="sd">    所形成的多源特征表示。其本质是对网格序列特征进行自注意力建模，并通过前馈网络</span>
+<span class="sd">    进一步增强表达能力。</span>
+
+<span class="sd">    本模块属于 **可学习算子**，其参数在训练过程中根据监督信号更新。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 结构说明（按顺序）</span>
+<span class="sd">    1. **MultiheadAttention（自注意力）**</span>
+<span class="sd">       - 在同一候选框内部，让各网格特征互相关注，实现局部关系建模。</span>
+<span class="sd">    2. **残差连接 + LayerNorm**</span>
+<span class="sd">       - 稳定训练并保留原始特征信息。</span>
+<span class="sd">    3. **前馈网络（FFN）**</span>
+<span class="sd">       - 对每个网格特征做非线性变换，增强语义表达能力。</span>
+<span class="sd">    4. **残差连接 + LayerNorm**</span>
+<span class="sd">       - 输出聚合后的网格级融合特征。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输入</span>
+<span class="sd">    Args:</span>
+<span class="sd">        fused_feat (torch.Tensor):</span>
+<span class="sd">            网格级融合特征，shape 为 **(K, G, C)**，</span>
+<span class="sd">            K 为候选框数量，G 为每个候选框的网格数量，C 为特征维度。</span>
+
+<span class="sd">        attn_mask (torch.Tensor, optional):</span>
+<span class="sd">            注意力掩码，shape 为 **(G, G)** 或可广播到该形状，用于屏蔽无效网格之间的注意力。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输出</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor:</span>
+<span class="sd">            聚合后的网格级特征，shape 为 **(K, G, C)**。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 模块用途</span>
+<span class="sd">    - 在 RoI 内部建立网格之间的关系，提升对目标内部结构的表达能力</span>
+<span class="sd">    - 统一整合多源融合信息，为最终框回归与置信度预测提供高质量特征</span>
+<span class="sd">    - 属于 LoGoNet 的 Feature Dynamic Aggregation（FDA）阶段核心算子</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ffn_ratio</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MultiheadAttention</span><span class="p">(</span>
+            <span class="n">embed_dim</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span>
+            <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span>
+            <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+            <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
+
+        <span class="n">hidden</span> <span class="o">=</span> <span class="n">channels</span> <span class="o">*</span> <span class="n">ffn_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">channels</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">fused_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+            <span class="n">attn_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        前向传播过程。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 1) 自注意力建模（网格之间信息交互）</span>
+        <span class="n">attn_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">(</span><span class="n">fused_feat</span><span class="p">,</span> <span class="n">fused_feat</span><span class="p">,</span> <span class="n">fused_feat</span><span class="p">,</span> <span class="n">attn_mask</span><span class="o">=</span><span class="n">attn_mask</span><span class="p">,</span> <span class="n">need_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm1</span><span class="p">(</span><span class="n">fused_feat</span> <span class="o">+</span> <span class="n">attn_out</span><span class="p">)</span>
+
+        <span class="c1"># 2) 前馈网络增强表达</span>
+        <span class="n">ffn_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm2</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">ffn_out</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer.forward" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">fused_feat</span><span class="p">,</span> <span class="n">attn_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#FeatureAggregation.network.FeatureAggregationLayer.FeatureAggregationLayer.forward" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>前向传播过程。</p>
+
+            <details class="quote">
+              <summary>Source code in <code>FeatureAggregation\network\FeatureAggregationLayer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fused_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">attn_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    前向传播过程。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 1) 自注意力建模（网格之间信息交互）</span>
+    <span class="n">attn_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">(</span><span class="n">fused_feat</span><span class="p">,</span> <span class="n">fused_feat</span><span class="p">,</span> <span class="n">fused_feat</span><span class="p">,</span> <span class="n">attn_mask</span><span class="o">=</span><span class="n">attn_mask</span><span class="p">,</span> <span class="n">need_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm1</span><span class="p">(</span><span class="n">fused_feat</span> <span class="o">+</span> <span class="n">attn_out</span><span class="p">)</span>
+
+    <span class="c1"># 2) 前馈网络增强表达</span>
+    <span class="n">ffn_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm2</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">ffn_out</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="roirefinehead">RoIRefineHead<a class="headerlink" href="#roirefinehead" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="FeatureAggregation.network.RoIRefineHead"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead" class="doc doc-heading">
+            <code>RoIRefineHead</code>
+
+
+<a href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+
+        <p>RoIRefineHead 模块（LoGoNet 候选框回归与打分阶段算子）。</p>
+<p>该模块基于经过特征动态聚合（FDA）后的网格级融合特征，
+对每个候选框（RoI）进行最终的类别置信度预测与三维框参数回归。
+其核心思想是：先将 RoI 内部的网格特征进行汇聚，形成候选框级表示，
+再通过轻量级前馈网络分别完成分类与回归任务。</p>
+<p>本模块属于 <strong>可学习算子</strong>，其参数在训练过程中根据检测监督信号更新。</p>
+<hr />
+<h5 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_1">结构说明（按顺序）<a class="headerlink" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_1" title="Permanent link">&para;</a></h5>
+<ol>
+<li><strong>网格特征汇聚（Mean Pooling）</strong></li>
+<li>将 RoI 内部 G 个网格特征聚合为单一候选框特征。</li>
+<li><strong>共享全连接层</strong></li>
+<li>对候选框级特征进行非线性映射，形成高层语义表示。</li>
+<li><strong>分类分支（Classification Head）</strong></li>
+<li>输出每个候选框的类别置信度。</li>
+<li><strong>回归分支（Regression Head）</strong></li>
+<li>输出候选框的三维框回归参数。</li>
+</ol>
+<hr />
+<h5 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_2">输入<a class="headerlink" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_2" title="Permanent link">&para;</a></h5>
+<p>Args:
+    roi_feat (torch.Tensor):
+        RoI 内部聚合后的网格级特征，shape 为 <strong>(K, G, C)</strong>，
+        K 为候选框数量，G 为每个候选框的网格数量，C 为特征维度。</p>
+<hr />
+<h5 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_3">输出<a class="headerlink" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_3" title="Permanent link">&para;</a></h5>
+<p>Returns:
+    cls_score (torch.Tensor):
+        候选框分类得分，shape 为 <strong>(K, num_classes)</strong>。</p>
+<div class="highlight"><pre><span></span><code>reg_offset (torch.Tensor):
+    候选框回归结果，shape 为 **(K, box_dim)**，
+    box_dim 通常为 7，对应 (x, y, z, dx, dy, dz, yaw)。
+</code></pre></div>
+<hr />
+<h5 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_4">模块用途<a class="headerlink" href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead--_4" title="Permanent link">&para;</a></h5>
+<ul>
+<li>对融合后的候选框进行最终分类与精细位置回归</li>
+<li>提升 3D 检测结果的定位精度与置信度可靠性</li>
+<li>属于 LoGoNet 检测头（Detection Head）的最后阶段</li>
+</ul>
+
+              <details class="quote">
+                <summary>Source code in <code>FeatureAggregation\network\RoIRefineHead.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RoIRefineHead</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RoIRefineHead 模块（LoGoNet 候选框回归与打分阶段算子）。</span>
+
+<span class="sd">    该模块基于经过特征动态聚合（FDA）后的网格级融合特征，</span>
+<span class="sd">    对每个候选框（RoI）进行最终的类别置信度预测与三维框参数回归。</span>
+<span class="sd">    其核心思想是：先将 RoI 内部的网格特征进行汇聚，形成候选框级表示，</span>
+<span class="sd">    再通过轻量级前馈网络分别完成分类与回归任务。</span>
+
+<span class="sd">    本模块属于 **可学习算子**，其参数在训练过程中根据检测监督信号更新。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 结构说明（按顺序）</span>
+<span class="sd">    1. **网格特征汇聚（Mean Pooling）**</span>
+<span class="sd">       - 将 RoI 内部 G 个网格特征聚合为单一候选框特征。</span>
+<span class="sd">    2. **共享全连接层**</span>
+<span class="sd">       - 对候选框级特征进行非线性映射，形成高层语义表示。</span>
+<span class="sd">    3. **分类分支（Classification Head）**</span>
+<span class="sd">       - 输出每个候选框的类别置信度。</span>
+<span class="sd">    4. **回归分支（Regression Head）**</span>
+<span class="sd">       - 输出候选框的三维框回归参数。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输入</span>
+<span class="sd">    Args:</span>
+<span class="sd">        roi_feat (torch.Tensor):</span>
+<span class="sd">            RoI 内部聚合后的网格级特征，shape 为 **(K, G, C)**，</span>
+<span class="sd">            K 为候选框数量，G 为每个候选框的网格数量，C 为特征维度。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输出</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        cls_score (torch.Tensor):</span>
+<span class="sd">            候选框分类得分，shape 为 **(K, num_classes)**。</span>
+
+<span class="sd">        reg_offset (torch.Tensor):</span>
+<span class="sd">            候选框回归结果，shape 为 **(K, box_dim)**，</span>
+<span class="sd">            box_dim 通常为 7，对应 (x, y, z, dx, dy, dz, yaw)。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 模块用途</span>
+<span class="sd">    - 对融合后的候选框进行最终分类与精细位置回归</span>
+<span class="sd">    - 提升 3D 检测结果的定位精度与置信度可靠性</span>
+<span class="sd">    - 属于 LoGoNet 检测头（Detection Head）的最后阶段</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">in_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">box_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shared_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls_head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">box_dim</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roi_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        前向传播过程。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 1) 网格维度聚合（Mean Pooling）</span>
+        <span class="n">pooled_feat</span> <span class="o">=</span> <span class="n">roi_feat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, C)</span>
+
+        <span class="c1"># 2) 共享特征变换</span>
+        <span class="n">feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_fc</span><span class="p">(</span><span class="n">pooled_feat</span><span class="p">)</span>
+
+        <span class="c1"># 3) 分类与回归预测</span>
+        <span class="n">cls_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_head</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
+        <span class="n">reg_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_head</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cls_score</span><span class="p">,</span> <span class="n">reg_offset</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="FeatureAggregation.network.RoIRefineHead.RoIRefineHead.forward" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">roi_feat</span><span class="p">)</span></code>
+
+<a href="#FeatureAggregation.network.RoIRefineHead.RoIRefineHead.forward" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>前向传播过程。</p>
+
+            <details class="quote">
+              <summary>Source code in <code>FeatureAggregation\network\RoIRefineHead.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roi_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    前向传播过程。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 1) 网格维度聚合（Mean Pooling）</span>
+    <span class="n">pooled_feat</span> <span class="o">=</span> <span class="n">roi_feat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (K, C)</span>
+
+    <span class="c1"># 2) 共享特征变换</span>
+    <span class="n">feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared_fc</span><span class="p">(</span><span class="n">pooled_feat</span><span class="p">)</span>
+
+    <span class="c1"># 3) 分类与回归预测</span>
+    <span class="n">cls_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_head</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
+    <span class="n">reg_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_head</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cls_score</span><span class="p">,</span> <span class="n">reg_offset</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../LocalFusion/" class="btn btn-neutral float-left" title="局部融合（Local Fusion）"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../framework/" class="btn btn-neutral float-right" title="框架总览（Framework）">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../LocalFusion/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../framework/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

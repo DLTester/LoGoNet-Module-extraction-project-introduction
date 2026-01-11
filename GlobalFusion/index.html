@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>全局融合（Global Fusion） - LoGoNet 跨模态融合算子文档</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/overrides.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u5168\u5c40\u878d\u5408\uff08Global Fusion\uff09";
+        var mkdocs_page_input_path = "GlobalFusion.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> LoGoNet 跨模态融合算子文档
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">文档首页</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">全局融合（Global Fusion）</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#api">API 文档</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#compute_voxel_centroid">compute_voxel_centroid</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.compute_voxel_centroid">compute_voxel_centroid</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.compute_voxel_centroid.compute_voxel_centroid">compute_voxel_centroid</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#project_points_to_image">project_points_to_image</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.project_points_to_image">project_points_to_image</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.project_points_to_image.project_points_to_image">project_points_to_image</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#globalfusionlayer">GlobalFusionLayer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer">GlobalFusionLayer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer">GlobalFusionLayer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_1">结构说明（按顺序）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_2">输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_3">输出</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_4">模块用途</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer.forward">forward</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#roi_feature_pooling">roi_feature_pooling</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.roi_feature_pooling">roi_feature_pooling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#GlobalFusion.operator.roi_feature_pooling.roi_feature_pooling">roi_feature_pooling</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../LocalFusion/">局部融合（Local Fusion）</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FeatureAggregation/">特征聚合（Feature Aggregation）</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../framework/">框架总览（Framework）</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">LoGoNet 跨模态融合算子文档</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">全局融合（Global Fusion）</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="global-fusion">Global Fusion（全局融合）<a class="headerlink" href="#global-fusion" title="Permanent link">&para;</a></h1>
+<p>本阶段的作用是 <strong>在场景层面将点云特征与图像特征进行对齐与融合</strong>，
+通过引入图像语义信息增强点云特征的表达能力，为后续基于候选框的局部建模提供更具判别力的输入。</p>
+<p>全局融合阶段不关注单个目标的内部结构，而是从整体角度完成跨模态信息注入，
+属于 LoGoNet 融合流程中的 <strong>第一层跨模态融合</strong>。</p>
+<p>本阶段包含四个算子：</p>
+<ol>
+<li>
+<p><strong>compute_voxel_centroid</strong><br />
+   计算每个 voxel 内部点云的几何质心，用于代表该 voxel 的空间位置。</p>
+</li>
+<li>
+<p><strong>project_points_to_image</strong><br />
+   将 voxel 质心从三维空间投影到二维图像平面，建立点云与图像之间的空间对应关系。</p>
+</li>
+<li>
+<p><strong>GlobalFusionLayer</strong><br />
+   在全局尺度下从图像特征图采样与 voxel 对应的语义信息，并注入到点云特征中，输出语义增强后的点云表示。</p>
+</li>
+<li>
+<p><strong>roi_feature_pooling</strong><br />
+   根据 3D 候选框（RoI）对融合后的点云特征进行汇聚，生成候选框级特征表示。</p>
+</li>
+</ol>
+<hr />
+<h2 id="api">API 文档<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<h3 id="compute_voxel_centroid">compute_voxel_centroid<a class="headerlink" href="#compute_voxel_centroid" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="GlobalFusion.operator.compute_voxel_centroid"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="GlobalFusion.operator.compute_voxel_centroid.compute_voxel_centroid" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute_voxel_centroid</span><span class="p">(</span><span class="n">voxel_points</span><span class="p">,</span> <span class="n">voxel_num_points</span><span class="p">)</span></code>
+
+<a href="#GlobalFusion.operator.compute_voxel_centroid.compute_voxel_centroid" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>计算每个 voxel 内点云的质心（centroid），作为该 voxel 的几何代表点。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>voxel_points</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(M, T, 3)
+每个 voxel 内的点云坐标，
+M 表示 voxel 数量，
+T 表示每个 voxel 的最大点数，
+3 表示点的三维坐标 (x, y, z)。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>voxel_num_points</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(M,)
+每个 voxel 内的有效点数量。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>centroids</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(M, 3)
+voxel 级点云质心坐标，
+第 i 行表示第 i 个 voxel 内所有点的平均空间位置。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>GlobalFusion\operator\compute_voxel_centroid.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::compute_voxel_centroid&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_voxel_centroid</span><span class="p">(</span>
+        <span class="n">voxel_points</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">voxel_num_points</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算每个 voxel 内点云的质心（centroid），作为该 voxel 的几何代表点。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        voxel_points: (M, T, 3)</span>
+<span class="sd">            每个 voxel 内的点云坐标，</span>
+<span class="sd">            M 表示 voxel 数量，</span>
+<span class="sd">            T 表示每个 voxel 的最大点数，</span>
+<span class="sd">            3 表示点的三维坐标 (x, y, z)。</span>
+
+<span class="sd">        voxel_num_points: (M,)</span>
+<span class="sd">            每个 voxel 内的有效点数量。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        centroids: (M, 3)</span>
+<span class="sd">            voxel 级点云质心坐标，</span>
+<span class="sd">            第 i 行表示第 i 个 voxel 内所有点的平均空间位置。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 对 voxel 内所有点坐标求和</span>
+    <span class="n">points_sum</span> <span class="o">=</span> <span class="n">voxel_points</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 防止除以 0，保证数值稳定</span>
+    <span class="n">normalizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span>
+        <span class="n">voxel_num_points</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">voxel_points</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 计算 voxel 内点云质心</span>
+    <span class="n">centroids</span> <span class="o">=</span> <span class="n">points_sum</span> <span class="o">/</span> <span class="n">normalizer</span>
+
+    <span class="k">return</span> <span class="n">centroids</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="project_points_to_image">project_points_to_image<a class="headerlink" href="#project_points_to_image" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="GlobalFusion.operator.project_points_to_image"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="GlobalFusion.operator.project_points_to_image.project_points_to_image" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">project_points_to_image</span><span class="p">(</span><span class="n">points_3d</span><span class="p">,</span> <span class="n">intrinsic</span><span class="p">,</span> <span class="n">extrinsic</span><span class="p">)</span></code>
+
+<a href="#GlobalFusion.operator.project_points_to_image.project_points_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>将三维空间中的点投影到图像平面，得到对应的二维像素坐标。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>points_3d</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(N, 3)
+三维点坐标，格式为 (x, y, z)。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>intrinsic</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(3, 3)
+相机内参矩阵。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>extrinsic</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(4, 4)
+相机外参矩阵，从 LiDAR 坐标系到相机坐标系的变换。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>points_2d</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(N, 2)
+投影后的二维像素坐标，格式为 (u, v)。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>GlobalFusion\operator\project_points_to_image.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::project_points_to_image&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">project_points_to_image</span><span class="p">(</span>
+        <span class="n">points_3d</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">intrinsic</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">extrinsic</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将三维空间中的点投影到图像平面，得到对应的二维像素坐标。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points_3d: (N, 3)</span>
+<span class="sd">            三维点坐标，格式为 (x, y, z)。</span>
+
+<span class="sd">        intrinsic: (3, 3)</span>
+<span class="sd">            相机内参矩阵。</span>
+
+<span class="sd">        extrinsic: (4, 4)</span>
+<span class="sd">            相机外参矩阵，从 LiDAR 坐标系到相机坐标系的变换。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        points_2d: (N, 2)</span>
+<span class="sd">            投影后的二维像素坐标，格式为 (u, v)。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 齐次坐标扩展</span>
+    <span class="n">ones</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">points_3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">points_3d</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">points_3d</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="p">)</span>
+    <span class="n">points_homo</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">points_3d</span><span class="p">,</span> <span class="n">ones</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (N, 4)</span>
+
+    <span class="c1"># 从 LiDAR 坐标系变换到相机坐标系</span>
+    <span class="n">points_cam</span> <span class="o">=</span> <span class="p">(</span><span class="n">extrinsic</span> <span class="o">@</span> <span class="n">points_homo</span><span class="o">.</span><span class="n">t</span><span class="p">())</span><span class="o">.</span><span class="n">t</span><span class="p">()[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># (N, 3)</span>
+
+    <span class="c1"># 过滤深度为 0 或负值的点，避免非法投影</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="n">points_cam</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+
+    <span class="c1"># 应用相机内参进行投影</span>
+    <span class="n">uv</span> <span class="o">=</span> <span class="p">(</span><span class="n">intrinsic</span> <span class="o">@</span> <span class="n">points_cam</span><span class="o">.</span><span class="n">t</span><span class="p">())</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>  <span class="c1"># (N, 3)</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">uv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">uv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span>
+
+    <span class="n">points_2d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">points_2d</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="globalfusionlayer">GlobalFusionLayer<a class="headerlink" href="#globalfusionlayer" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="GlobalFusion.network.GlobalFusionLayer"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer" class="doc doc-heading">
+            <code>GlobalFusionLayer</code>
+
+
+<a href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+
+        <p>GlobalFusionLayer 模块（LoGoNet 全局融合阶段核心算子）。</p>
+<p>该模块在场景级别对点云特征与图像特征进行跨模态融合，用于为 voxel / proposal
+引入来自图像的语义信息。其核心思想是：以点云特征为引导，在图像特征图中
+动态采样与其空间位置对应的图像特征，并完成跨模态特征对齐与融合。</p>
+<p>本模块属于 <strong>可学习算子</strong>，其内部包含线性映射与注意力权重相关参数，
+在训练过程中通过反向传播进行更新。</p>
+<hr />
+<h5 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_1">结构说明（按顺序）<a class="headerlink" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_1" title="Permanent link">&para;</a></h5>
+<ol>
+<li><strong>Linear：点云特征 → Query</strong></li>
+<li>将点云特征映射到查询空间。</li>
+<li><strong>Linear：点云特征 → Offset / Weight</strong></li>
+<li>预测图像特征的采样偏移与融合权重。</li>
+<li><strong>图像特征采样</strong></li>
+<li>在图像特征图中，根据投影位置与偏移进行局部采样。</li>
+<li><strong>特征融合</strong></li>
+<li>将采样到的图像特征与点云特征进行加权融合，输出增强后的点云特征。</li>
+</ol>
+<hr />
+<h5 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_2">输入<a class="headerlink" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_2" title="Permanent link">&para;</a></h5>
+<p>Args:
+    lidar_feat (torch.Tensor):
+        点云特征张量，shape 为 <strong>(N, C_l)</strong>，
+        N 表示 voxel / 点数量，C_l 表示点云特征维度。</p>
+<div class="highlight"><pre><span></span><code>image_feat (torch.Tensor):
+    图像特征张量，shape 为 **(B, C_i, H, W)**，
+    B 为 batch size，C_i 为图像特征通道数。
+
+proj_points (torch.Tensor):
+    点云特征对应的图像投影坐标，shape 为 **(N, 2)**，
+    表示每个点在图像平面上的 (u, v) 位置。
+</code></pre></div>
+<hr />
+<h5 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_3">输出<a class="headerlink" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_3" title="Permanent link">&para;</a></h5>
+<p>Returns:
+    torch.Tensor:
+        融合后的点云特征，shape 为 <strong>(N, C_l)</strong>，
+        每个点云特征已注入对应的图像语义信息。</p>
+<hr />
+<h5 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_4">模块用途<a class="headerlink" href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer--_4" title="Permanent link">&para;</a></h5>
+<ul>
+<li>在全局尺度下完成点云与图像的跨模态特征融合</li>
+<li>为后续 proposal 级与局部融合提供语义增强的点云表示</li>
+<li>属于 LoGoNet 的 GlobalFusion（GoF）阶段核心算子</li>
+</ul>
+
+              <details class="quote">
+                <summary>Source code in <code>GlobalFusion\network\GlobalFusionLayer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GlobalFusionLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    GlobalFusionLayer 模块（LoGoNet 全局融合阶段核心算子）。</span>
+
+<span class="sd">    该模块在场景级别对点云特征与图像特征进行跨模态融合，用于为 voxel / proposal</span>
+<span class="sd">    引入来自图像的语义信息。其核心思想是：以点云特征为引导，在图像特征图中</span>
+<span class="sd">    动态采样与其空间位置对应的图像特征，并完成跨模态特征对齐与融合。</span>
+
+<span class="sd">    本模块属于 **可学习算子**，其内部包含线性映射与注意力权重相关参数，</span>
+<span class="sd">    在训练过程中通过反向传播进行更新。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 结构说明（按顺序）</span>
+<span class="sd">    1. **Linear：点云特征 → Query**</span>
+<span class="sd">       - 将点云特征映射到查询空间。</span>
+<span class="sd">    2. **Linear：点云特征 → Offset / Weight**</span>
+<span class="sd">       - 预测图像特征的采样偏移与融合权重。</span>
+<span class="sd">    3. **图像特征采样**</span>
+<span class="sd">       - 在图像特征图中，根据投影位置与偏移进行局部采样。</span>
+<span class="sd">    4. **特征融合**</span>
+<span class="sd">       - 将采样到的图像特征与点云特征进行加权融合，输出增强后的点云特征。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输入</span>
+<span class="sd">    Args:</span>
+<span class="sd">        lidar_feat (torch.Tensor):</span>
+<span class="sd">            点云特征张量，shape 为 **(N, C_l)**，</span>
+<span class="sd">            N 表示 voxel / 点数量，C_l 表示点云特征维度。</span>
+
+<span class="sd">        image_feat (torch.Tensor):</span>
+<span class="sd">            图像特征张量，shape 为 **(B, C_i, H, W)**，</span>
+<span class="sd">            B 为 batch size，C_i 为图像特征通道数。</span>
+
+<span class="sd">        proj_points (torch.Tensor):</span>
+<span class="sd">            点云特征对应的图像投影坐标，shape 为 **(N, 2)**，</span>
+<span class="sd">            表示每个点在图像平面上的 (u, v) 位置。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 输出</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor:</span>
+<span class="sd">            融合后的点云特征，shape 为 **(N, C_l)**，</span>
+<span class="sd">            每个点云特征已注入对应的图像语义信息。</span>
+
+<span class="sd">    ---</span>
+<span class="sd">    ### 模块用途</span>
+<span class="sd">    - 在全局尺度下完成点云与图像的跨模态特征融合</span>
+<span class="sd">    - 为后续 proposal 级与局部融合提供语义增强的点云表示</span>
+<span class="sd">    - 属于 LoGoNet 的 GlobalFusion（GoF）阶段核心算子</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lidar_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">image_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">lidar_channels</span><span class="p">,</span> <span class="n">lidar_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">image_channels</span><span class="p">,</span> <span class="n">lidar_channels</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lidar_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">image_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">proj_points</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        前向传播过程。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 点云特征映射到查询空间</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span><span class="p">(</span><span class="n">lidar_feat</span><span class="p">)</span>  <span class="c1"># (N, C_l)</span>
+
+        <span class="c1"># 将投影坐标归一化到 [-1, 1]，用于 grid_sample</span>
+        <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">norm_u</span> <span class="o">=</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">norm_v</span> <span class="o">=</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">norm_u</span><span class="p">,</span> <span class="n">norm_v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># 从图像特征中采样对应位置的特征</span>
+        <span class="n">sampled_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">grid_sample</span><span class="p">(</span>
+            <span class="n">image_feat</span><span class="p">,</span>
+            <span class="n">grid</span><span class="p">,</span>
+            <span class="n">align_corners</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>  <span class="c1"># (N, C_i)</span>
+
+        <span class="c1"># 图像特征映射到点云特征空间</span>
+        <span class="n">image_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span><span class="p">(</span><span class="n">sampled_feat</span><span class="p">)</span>
+
+        <span class="c1"># 跨模态特征融合</span>
+        <span class="n">fused_feat</span> <span class="o">=</span> <span class="n">query</span> <span class="o">+</span> <span class="n">image_emb</span>
+
+        <span class="k">return</span> <span class="n">fused_feat</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer.forward" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">lidar_feat</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">proj_points</span><span class="p">)</span></code>
+
+<a href="#GlobalFusion.network.GlobalFusionLayer.GlobalFusionLayer.forward" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>前向传播过程。</p>
+
+            <details class="quote">
+              <summary>Source code in <code>GlobalFusion\network\GlobalFusionLayer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">lidar_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">image_feat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">proj_points</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    前向传播过程。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 点云特征映射到查询空间</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_fc</span><span class="p">(</span><span class="n">lidar_feat</span><span class="p">)</span>  <span class="c1"># (N, C_l)</span>
+
+    <span class="c1"># 将投影坐标归一化到 [-1, 1]，用于 grid_sample</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="n">norm_u</span> <span class="o">=</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">norm_v</span> <span class="o">=</span> <span class="n">proj_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">norm_u</span><span class="p">,</span> <span class="n">norm_v</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># 从图像特征中采样对应位置的特征</span>
+    <span class="n">sampled_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">grid_sample</span><span class="p">(</span>
+        <span class="n">image_feat</span><span class="p">,</span>
+        <span class="n">grid</span><span class="p">,</span>
+        <span class="n">align_corners</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">image_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>  <span class="c1"># (N, C_i)</span>
+
+    <span class="c1"># 图像特征映射到点云特征空间</span>
+    <span class="n">image_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_fc</span><span class="p">(</span><span class="n">sampled_feat</span><span class="p">)</span>
+
+    <span class="c1"># 跨模态特征融合</span>
+    <span class="n">fused_feat</span> <span class="o">=</span> <span class="n">query</span> <span class="o">+</span> <span class="n">image_emb</span>
+
+    <span class="k">return</span> <span class="n">fused_feat</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h3 id="roi_feature_pooling">roi_feature_pooling<a class="headerlink" href="#roi_feature_pooling" title="Permanent link">&para;</a></h3>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="GlobalFusion.operator.roi_feature_pooling"></a>
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="GlobalFusion.operator.roi_feature_pooling.roi_feature_pooling" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">roi_feature_pooling</span><span class="p">(</span><span class="n">voxel_features</span><span class="p">,</span> <span class="n">voxel_coords</span><span class="p">,</span> <span class="n">rois</span><span class="p">)</span></code>
+
+<a href="#GlobalFusion.operator.roi_feature_pooling.roi_feature_pooling" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>根据 3D 候选框（RoI）对点云特征进行汇聚，生成候选框级特征表示。</p>
+<p>该算子将已经完成全局融合的 voxel 特征，按照每个 3D 框的空间范围进行筛选与聚合，
+从而得到每个候选框对应的整体特征表示。本算子仅执行几何索引与特征聚合操作，
+不包含可学习参数。</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>voxel_features</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(M, C)
+voxel 级特征张量，M 为 voxel 数量，C 为特征维度。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>voxel_coords</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(M, 3)
+voxel 对应的三维坐标 (x, y, z)。</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rois</code></b>
+                  (<code><span title="torch.Tensor">Tensor</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>(K, 7)
+3D 候选框参数，格式为 (x, y, z, dx, dy, dz, yaw)。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>roi_features</code></b>(                  <code><span title="torch.Tensor">Tensor</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>(K, C)
+每个 3D 候选框对应的聚合特征，
+第 i 行表示第 i 个候选框的整体点云特征。</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+            <details class="quote">
+              <summary>Source code in <code>GlobalFusion\operator\roi_feature_pooling.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">custom_op</span><span class="p">(</span>
+    <span class="s2">&quot;logonet::roi_feature_pooling&quot;</span><span class="p">,</span>
+    <span class="n">mutates_args</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">roi_feature_pooling</span><span class="p">(</span>
+        <span class="n">voxel_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">voxel_coords</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">rois</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    根据 3D 候选框（RoI）对点云特征进行汇聚，生成候选框级特征表示。</span>
+
+<span class="sd">    该算子将已经完成全局融合的 voxel 特征，按照每个 3D 框的空间范围进行筛选与聚合，</span>
+<span class="sd">    从而得到每个候选框对应的整体特征表示。本算子仅执行几何索引与特征聚合操作，</span>
+<span class="sd">    不包含可学习参数。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        voxel_features: (M, C)</span>
+<span class="sd">            voxel 级特征张量，M 为 voxel 数量，C 为特征维度。</span>
+
+<span class="sd">        voxel_coords: (M, 3)</span>
+<span class="sd">            voxel 对应的三维坐标 (x, y, z)。</span>
+
+<span class="sd">        rois: (K, 7)</span>
+<span class="sd">            3D 候选框参数，格式为 (x, y, z, dx, dy, dz, yaw)。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        roi_features: (K, C)</span>
+<span class="sd">            每个 3D 候选框对应的聚合特征，</span>
+<span class="sd">            第 i 行表示第 i 个候选框的整体点云特征。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">rois</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">voxel_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">roi_features</span> <span class="o">=</span> <span class="n">voxel_features</span><span class="o">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rois</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># 判断 voxel 是否落在当前 RoI 内</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cz</span> <span class="o">-</span> <span class="n">dz</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">voxel_coords</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cz</span> <span class="o">+</span> <span class="n">dz</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="c1"># 对 RoI 内 voxel 特征进行平均聚合</span>
+            <span class="n">roi_features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">voxel_features</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">roi_features</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="文档首页"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../LocalFusion/" class="btn btn-neutral float-right" title="局部融合（Local Fusion）">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../LocalFusion/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
